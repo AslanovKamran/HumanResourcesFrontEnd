@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="script.js" defer></script> <!-- Link to your JS file -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+
+<div id="structureContainer">
+    <div id="structureHeader" style="cursor: pointer;">
+        <h3>Yeni struktur əlavə et:</h3>
+    </div>
+
+    <div id="structureInputsContainer">
+        <form id="structureForm">
+            <label for="structureCodeInput">Strukturun Kodu: </label>
+            <input type="text" id="structureCodeInput" >
+
+            <label for="structureNameInput">Strukturun Adı: </label>
+            <input oninvalid="this.setCustomValidity('Strukturun adi boş ola bilməz')" required type="text" id="structureNameInput"  >
+
+            <label for="beginningHistoryInput">Yaranma Tarixi: </label>
+            <input type="date" id="beginningHistoryInput">
+
+            <label for="telephone1Input">Telefon №1: </label>
+            <input placeholder="Nümunə: +(994)50 123-45-67 " type="te" id="telephone1Input" >
+
+            <label for="telephone2Input">Telefon №2 (kommutator): </label>
+            <input type="text" id="telephone2Input" >
+
+            <label>Aid olduğu struktur:</label>
+            <input readonly type="text" id="structureIdInput" placeholder="Strukturu siyahıdan seçin və ya boş saxlayın" data-parentId="" >
+
+            <div id="buttonContainer">
+                <button type="submit" id="addButton">Əlavə et</button>
+                <button type="button" id="eraseButton">Sil</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="container">
+    <h1>Təşkilatın strukturu</h1>
+    <br>
+    <label>
+        <input type="checkbox" id="showCanceled"> Ləğv olunmuşları göstər
+    </label>
+
+    <ul id="folderHierarchy"></ul> <!-- This is where the structure will be rendered -->
+</div>
+
+</html>

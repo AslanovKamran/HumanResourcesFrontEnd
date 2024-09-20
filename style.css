@@ -1,0 +1,246 @@
+/* #region General Styles */
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    margin: 0;
+    padding: 20px;
+}
+
+h1 {
+    font-size: 24px;
+    color: #333;
+}
+/* #endregion */
+
+/* #region Main styles */
+
+input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+.container {
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    max-height: max-content;
+}
+
+label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 16px;
+    color: #555;
+}
+
+.toggle-btn {
+    cursor: pointer;
+    margin-right: 10px;
+    font-weight: bold;
+    color: #0066cc;
+    display: inline-block;
+}
+
+/* Ensure smooth expanding of children */
+.children {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+}
+
+.expanded>.children {
+    opacity: 1;
+}
+
+
+.canceled a {
+    color: red;
+    font-weight: bold; /* Optional: make canceled items bold */
+}
+.canceled span {
+    color: red;
+    font-weight: bold; /* Optional: make canceled items bold */
+}
+
+ul {
+    list-style: none;
+    padding-left: 30px;
+}
+
+li a {
+    position: relative;
+    text-decoration: none;
+    color: #325174;
+    font-weight: bold;
+}
+
+li {
+    position: relative;
+    margin: 5px 0;
+    line-height: 35px;
+}
+
+/* Create the underline effect */
+li a::after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background-color: #0066cc;
+    visibility: hidden;
+    transform: scaleX(0);
+    transition: all 0.3s ease-in-out;
+}
+
+/* When hovered, the underline becomes visible and animates from left to right */
+li a:hover::after {
+    visibility: visible;
+    transform: scaleX(1);
+}
+
+/* Optional hover effect on text color */
+li a:hover {
+    color: #003366;
+    /* Darker blue when hovered */
+    text-decoration: none;
+}
+
+/* #endregion */
+
+/* #region Input Styles */
+
+#structureHeader{
+    transition: all 0.2s ease-in-out;
+}
+#structureHeader:hover{
+    background-color: #333333;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    transform: translateY(-3px);
+}
+
+#structureContainer {
+    margin-bottom: 20px;
+}
+
+#structureHeader {
+    background-color: #325174;
+    color: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+form{
+    width: 100%;
+}
+
+#structureInputsContainer {
+   
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin-top: 10px;
+    overflow: hidden;
+    transition: max-height 0.5s ease-in-out, padding 0.3s ease-in-out, margin 0.3s ease-in-out;
+}
+
+#structureInputsContainer.expanded {
+    padding: 20px; /* Restore padding when expanded */
+    margin-top: 10px;
+}
+
+/* Styling for the input fields */
+#structureInputsContainer input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;  /* Rounded corners */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  /* Shadow effect */
+    transition: all 0.3s ease-in-out;
+}
+
+#structureInputsContainer label {
+    width: 100%;
+    font-weight: bold;
+    font-size: 14px;
+    color: #555;
+    cursor: pointer;
+}
+
+
+/* Animation effect on hover */
+#structureInputsContainer input:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);  /* Larger shadow on hover */
+    border-color: #0066CC;  /* Change border color on hover */
+}
+
+/* Flex styling for each input group */
+#structureInputsContainer label, 
+#structureInputsContainer input {
+    margin-bottom: 7px;
+    margin-top: 7px;
+}
+
+/* #endregion */
+
+/* #region Button Container Styling */
+
+#buttonContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;  /* Align buttons next to each other */
+    margin-top: 20px;
+    width: 100%;
+    padding: 5px;
+}
+
+#buttonContainer button {
+    width: 100px;  /* Make the buttons the same width */
+    padding: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);  /* Subtle shadow effect */
+}
+
+/* Add Button Styling */
+#addButton {
+    background-color: #325174;  /* Green color */
+    color: white;
+}
+
+/* Erase Button Styling */
+#eraseButton {
+    background-color: #9c0615;  /* Red color */
+    color: white;
+}
+
+/* Hover Effects for Buttons */
+#buttonContainer button:hover {
+    opacity: 0.9;  /* Slight transparency on hover */
+    transform: translateY(-2px);  /* Slight lift effect */
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);  /* Deeper shadow on hover */
+}
+/* #endregion */
