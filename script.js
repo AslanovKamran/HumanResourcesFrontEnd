@@ -163,6 +163,10 @@ eraseButton.addEventListener('click', () => {
     document.getElementById('telephone1Input').value = '';
     document.getElementById('telephone2Input').value = '';
     document.getElementById('structureIdInput').value = '';
+
+     // Clear the data-parentId attribute (set to empty or null)
+     document.getElementById('structureIdInput').setAttribute('data-parentId', "");
+    
 });
 
 
@@ -198,14 +202,41 @@ structureForm.addEventListener('submit', async (event) => {
         if (response.ok) {
             const result = await response.json();  // Parse the response body as JSON
             console.log('Form successfully submitted:', result);
+
+            // SweetAlert2 Success Alert
+            Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: 'Organization successfully added!',
+                showConfirmButton: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Reload the page when the user presses "OK"
+                    window.location.reload();
+                }
+            });
+            
         }
         
         else {
             console.error('Error submitting the form:', response.status, response.statusText);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: `Failed to submit form: ${response.statusText}`,
+                showConfirmButton: true
+            });
         }
 
     } catch (error) {
         console.error('Error in POST request:', error);
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: `An error occurred while submitting the form.`,
+            footer: `<strong>Error Details:</strong> ${error.message || error}`,  // Show full error
+            showConfirmButton: true
+        });
     }
 });
 
