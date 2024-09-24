@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="script.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+
+<div id="structureContainer">
+
+    <div id="structureHeader" style="cursor: pointer;">
+        <h3>Yeni struktur əlavə et:</h3>
+    </div>
+
+    <div id="structureInputsContainer">
+        <form id="structureForm">
+            <label for="structureCodeInput">Strukturun Kodu: </label>
+            <input type="text" id="structureCodeInput">
+
+            <label for="structureNameInput">Strukturun Adı: </label>
+            <input required type="text" id="structureNameInput">
+
+            <label for="beginningHistoryInput">Yaranma Tarixi: </label>
+            <input type="date" id="beginningHistoryInput">
+
+            <label for="telephone1Input">Telefon №1: </label>
+            <input placeholder="Nümunə: +(994)50 123-45-67 " type="te" id="telephone1Input">
+
+            <label for="telephone2Input">Telefon №2 (kommutator): </label>
+            <input type="text" id="telephone2Input">
+
+            <label>Aid olduğu struktur:</label>
+            <input readonly type="text" id="structureIdInput" placeholder="Strukturu siyahıdan seçin və ya boş saxlayın"
+                data-parentId="">
+
+            <div id="buttonContainer">
+                <button type="submit" id="addButton">Əlavə et</button>
+                <button type="button" id="eraseButton">Sil</button>
+            </div>
+        </form>
+    </div>
+
+</div>
+
+<div class="container">
+
+    <div class="updateSection">
+        <h1>Təşkilatın strukturu</h1>
+        <button id="updateButton" disabled>Redaktə et</button>
+    </div>
+
+    <label>
+        <input type="checkbox" id="showCanceled"> Ləğv olunmuşları göstər
+    </label>
+
+    <ul id="folderHierarchy"></ul> <!-- This is where the structure will be rendered -->
+
+    <!-- Modal Structure -->
+    <div id="updateModal" class="modal">
+        <div class="modal-content">
+
+            <span class="close">&times;</span>
+
+            <div class="modalHeader">
+                <h3>Redaktə et pəncərəsi</h3>
+                <!-- Modal content goes here -->
+                <p id="modalMessage">Məlumat yüklənilir...</p>
+            </div>
+
+            <!-- Input Fields in a Row -->
+            <form id="updateForm" class="modal-form">
+
+                <div hidden class="form-group">
+                    <input hidden type="text" id="orgId" name="orgId" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label for="orgCode">Code:</label>
+                    <input type="text" id="orgCode" name="orgCode">
+                </div>
+
+                <div class="form-group">
+                    <label for="orgName">Name:</label>
+                    <input required type="text" id="orgName" name="orgName">
+                </div>
+
+                <div class="form-group">
+                    <label for="orgBeginningHistory">Beginning History:</label>
+                    <input type="date" id="orgBeginningHistory" name="orgBeginningHistory">
+                </div>
+
+                <div id="canceledCheckbox" class="form-group">
+                    <label for="orgCanceled">Canceled:</label>
+                    <input type="checkbox" id="orgCanceled" name="orgCanceled">
+                </div>
+
+                <div class="form-group">
+                    <label for="orgTelephone1">Telephone Number 1:</label>
+                    <input type="text" id="orgTelephone1" name="orgTelephone1">
+                </div>
+
+                <div class="form-group">
+                    <label for="orgTelephone2">Telephone Number 2:</label>
+                    <input type="text" id="orgTelephone2" name="orgTelephone2">
+                </div>
+
+                <div id="canceledCheckbox" class="form-group-checkbox">
+                    <label for="orgIsSeaCoef">Is Sea Coefficient:</label>
+                    <input type="checkbox" id="orgIsSeaCoef" name="orgIsSeaCoef">
+                </div>
+
+                <div class="form-group">
+                    <label for="tabelOrganizations">Tabel Organization:</label>
+                    <select id="tabelOrganizations">
+                        <option value=""></option>
+                        <option value="1">Baş idarə</option>
+                        <option value="2">Terminal təsərrüfat</option>
+                        <option value="3">Mühafizə</option>
+                        <option value="4">Avtonəqliyyat</option>
+                        <option value="5">YDM</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="orgTabelPriority">Tabel Priority:</label>
+                    <input type="number" min="0" id="orgTabelPriority" name="orgTabelPriority">
+                </div>
+
+                <div class="form-group">
+                    <label for="orgHeadName">Head Name:</label>
+                    <input type="text" id="orgHeadName" name="orgHeadName">
+                </div>
+
+                <div class="form-group">
+                    <label for="orgHeadPosition">Head Position:</label>
+                    <input type="text" id="orgHeadPosition" name="orgHeadPosition">
+                </div>
+
+                <div id="buttonsContainer" class="form-group">
+                    <button type="submit" id="submitButton" class="submit-btn">Submit</button>
+                    <button type="button" id="cancelButton" class="cancel-btn">Cancel</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+</div>
+
+</html>

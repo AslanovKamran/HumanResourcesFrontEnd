@@ -1,6 +1,15 @@
 // URL of your API endpoint
 const apiUrl = 'https://localhost:44338/api/OrganizationStructures';
 
+const modal = document.getElementById('updateModal');
+const span = document.getElementsByClassName('close')[0];
+const updateButton = document.getElementById('updateButton');
+const structureForm = document.getElementById('structureForm');
+
+const updateForm = document.getElementById('updateForm');
+const submitButton = document.getElementById('submitButton');
+const cancelButton = document.getElementById('cancelButton');
+
 // Function to fetch the hierarchical data from the API
 async function fetchHierarchy(includeCanceled) {
     try {
@@ -18,7 +27,6 @@ async function fetchHierarchy(includeCanceled) {
 
 // Recursive function to render the hierarchy as nested <ul> and <li> elements
 // Function to render the hierarchy and attach toggle functionality
-// Function to render the hierarchy and attach toggle functionality
 function renderHierarchy(hierarchy, parentElement) {
     parentElement.innerHTML = ''; // Clear previous content
 
@@ -26,7 +34,8 @@ function renderHierarchy(hierarchy, parentElement) {
         const li = document.createElement('li');
         const link = document.createElement('a');
         link.textContent = item.name;
-        link.href = `#${item.id}`;
+
+        link.href = `https://localhost:44338/api/OrganizationStructures/${item.id}`;
 
         if (item.canceled) {
             li.classList.add('canceled');
@@ -34,6 +43,14 @@ function renderHierarchy(hierarchy, parentElement) {
 
         link.addEventListener('click', (event) => {
             event.preventDefault(); // Prevent the default behavior of anchor tags
+
+            updateButton.disabled = false;
+
+
+
+            // Set the ID on the button
+            updateButton.setAttribute('data-organization-id', link.href);
+
             const inputField = document.getElementById('structureIdInput'); // Get the input field
             inputField.value = `${item.name}`;  // Set the value to the clicked structure ID
             inputField.setAttribute("data-parentId", item.id);
@@ -83,7 +100,7 @@ function renderHierarchy(hierarchy, parentElement) {
 
                     li.classList.remove('expanded');
                     toggleBtn.textContent = "+";
-                }               
+                }
             });
 
         } else {
@@ -111,14 +128,6 @@ document.getElementById('showCanceled').addEventListener('change', (event) => {
 displayHierarchy(false);
 
 
-
-
-
-
-
-
-
-
 // Handle the expand/collapse of the container
 const structureHeader = document.getElementById('structureHeader');
 const structureInputsContainer = document.getElementById('structureInputsContainer');
@@ -144,12 +153,6 @@ structureHeader.addEventListener('click', () => {
     }
 });
 
-
-
-
-
-
-
 // Get the Erase button and add an event listener to it
 const eraseButton = document.getElementById('eraseButton');
 
@@ -164,31 +167,31 @@ eraseButton.addEventListener('click', () => {
     document.getElementById('telephone2Input').value = '';
     document.getElementById('structureIdInput').value = '';
 
-     // Clear the data-parentId attribute (set to empty or null)
-     document.getElementById('structureIdInput').setAttribute('data-parentId', "");
-    
+    // Clear the data-parentId attribute (set to empty or null)
+    document.getElementById('structureIdInput').setAttribute('data-parentId', "");
+
 });
 
 
 
-const structureForm = document.getElementById('structureForm');
 
+//Submitting the form 
 structureForm.addEventListener('submit', async (event) => {
     event.preventDefault();
 
-    const formData = new FormData()
+    const formData = new FormData();
 
-        formData.append('Code', document.getElementById('structureCodeInput').value);
-        formData.append('Name', document.getElementById('structureNameInput').value);
-        formData.append('BeginningHistory', document.getElementById('beginningHistoryInput').value);
-        formData.append('ParentId', document.getElementById('structureIdInput').getAttribute("data-parentId"));
-        formData.append('FirstNumber', document.getElementById('telephone1Input').value);
-        formData.append('SecondNumber', document.getElementById('telephone2Input').value);
+    formData.append('Code', document.getElementById('structureCodeInput').value);
+    formData.append('Name', document.getElementById('structureNameInput').value);
+    formData.append('BeginningHistory', document.getElementById('beginningHistoryInput').value);
+    formData.append('ParentId', document.getElementById('structureIdInput').getAttribute("data-parentId"));
+    formData.append('FirstNumber', document.getElementById('telephone1Input').value);
+    formData.append('SecondNumber', document.getElementById('telephone2Input').value);
 
-        
-        for (let pair of formData.entries()) {
-            console.log(`${pair[0]}: ${pair[1]}`);
-        }
+
+    for (let pair of formData.entries()) {
+        console.log(`${pair[0]}: ${pair[1]}`);
+    }
 
     try {
 
@@ -215,9 +218,9 @@ structureForm.addEventListener('submit', async (event) => {
                     window.location.reload();
                 }
             });
-            
+
         }
-        
+
         else {
             console.error('Error submitting the form:', response.status, response.statusText);
             Swal.fire({
@@ -242,5 +245,152 @@ structureForm.addEventListener('submit', async (event) => {
 
 
 
+//Open up the modal window on Update button click 
+updateButton.addEventListener('click', async function () {
+    const organizationUrl = updateButton.getAttribute('data-organization-id');
+    if (!organizationUrl) {
+        console.error("No organization ID found");
+        return;
+    }
+
+    // Show the modal
+    modal.style.display = "block";
+    document.body.style.overflow = 'hidden';
+
+    // Fetch the organization data
+    try {
+        const response = await fetch(organizationUrl);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        console.log('Organization Data:', data);  // Console log the data
+
+        document.getElementById('orgId').value = data.id || '';
+        document.getElementById('orgCode').value = data.code || '';
+        document.getElementById('orgName').value = data.name || '';
+        document.getElementById('orgBeginningHistory').value = data.beginningHistory ? new Date(data.beginningHistory).toISOString().split('T')[0] : ''; // Date formatting YYYY-MM-DD
+        document.getElementById('orgCanceled').checked = data.canceled || false;
+        document.getElementById('orgTelephone1').value = data.firstNumber || '';
+        document.getElementById('orgTelephone2').value = data.secondNumber || '';
+        document.getElementById('orgIsSeaCoef').checked = data.isSeaCoef || false;
+
+        if (data.tabelOrganizationId) {
+            document.getElementById('tabelOrganizations').value = data.tabelOrganizationId;
+        } else {
+            document.getElementById('tabelOrganizations').value = ''; // Default to "Nothing" option
+        }
+
+        document.getElementById('orgTabelPriority').value = data.tabelPriority || '';
+        document.getElementById('orgHeadName').value = data.headName || '';
+        document.getElementById('orgHeadPosition').value = data.headPosition || '';
 
 
+        // You can now populate the modal with the data or do further processing
+        document.getElementById('modalMessage').textContent = `Məlumat uğurla yükləndi`;
+
+    } catch (error) {
+        console.error('Error in POST request:', error);
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: `An error occurred while trying to update the organization.`,
+            footer: `<strong>Error Details:</strong> ${error.message || error}`,  // Show full error
+            showConfirmButton: true
+        });
+    }
+});
+
+// Close the modal when the user clicks on <span> (x)
+span.onclick = function () {
+    closeModal();
+}
+
+// Close the modal when the user clicks anywhere outside of the modal
+window.onclick = function (event) {
+    if (event.target == modal) {
+        closeModal();
+    }
+}
+
+
+cancelButton.addEventListener('click', function () {
+    closeModal();
+    updateForm.reset();
+    document.body.style.overflow = '';
+});
+
+function closeModal() {
+    modal.style.display = "none";
+    document.body.style.overflow = '';
+    updateButton.disabled = true;
+}
+
+
+updateForm.addEventListener('submit', async function (event) {
+    event.preventDefault(); // Prevent default form submission behavior
+
+    // Gather the form data
+
+    const formData = new FormData()
+
+
+    // Manually append key-value pairs to formData
+    formData.append('id', document.getElementById('orgId').value);
+    formData.append('code', document.getElementById('orgCode').value);
+    formData.append('name', document.getElementById('orgName').value);
+    formData.append('beginningHistory', document.getElementById('orgBeginningHistory').value);
+    formData.append('firstNumber', document.getElementById('orgTelephone1').value || '');
+    formData.append('secondNumber', document.getElementById('orgTelephone2').value || '');
+    formData.append('tabelOrganizationId', document.getElementById('tabelOrganizations').value || '');
+    formData.append('tabelPriority', document.getElementById('orgTabelPriority').value || '');
+    formData.append('canceled', document.getElementById('orgCanceled').checked);
+    formData.append('headName', document.getElementById('orgHeadName').value || '');
+    formData.append('headPosition', document.getElementById('orgHeadPosition').value || '');
+    formData.append('isSeaCoef', document.getElementById('orgIsSeaCoef').checked);
+
+    for (let pair of formData.entries()) {
+        console.log(`${pair[0]}: ${pair[1]}`);
+    }
+    try {
+        const response = await fetch(apiUrl, {
+            method: 'PUT',
+            body: formData
+        });
+    
+        // Check if the request was successful
+        if (response.ok) {
+            // Success alert
+            Swal.fire({
+                icon: 'success',
+                title: 'Success!',
+                text: 'The organization structure has been updated successfully!',
+                showConfirmButton: true
+            });
+            closeModal();
+        } else {
+            // If not ok, log and display the full response
+            const errorData = await response.text(); // Capture the response body as text or JSON
+    
+            // Error alert showing the response status and error details
+            Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: `Failed to update the organization structure. Status: ${response.status}\nDetails: ${errorData}`,
+                showConfirmButton: true
+            });
+    
+            // Log the full error details in the console for debugging
+            console.error('Error details:', errorData);
+        }
+    } catch (error) {
+        // Catch and display any network errors or other issues
+        Swal.fire({
+            icon: 'error',
+            title: 'Error!',
+            text: `An error occurred: ${error.message}`,
+            showConfirmButton: true
+        });
+    }
+
+});
