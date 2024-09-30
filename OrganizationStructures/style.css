@@ -129,6 +129,40 @@ li a:hover {
 
 /* #endregion */
 
+/* #region Navigation Panel */
+
+.nav-panel {
+    background-color: #333;
+    padding: 10px;
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 10px;
+    border-radius: 10px;
+}
+
+.nav-panel ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-panel ul li {
+    display: inline;
+    margin-right: 20px;
+}
+
+.nav-panel ul li a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.nav-panel ul li a:hover {
+    color: #ddd;
+}
+
+/* #endregion */
+
 /* #region Input Styles */
 
 #structureHeader {
